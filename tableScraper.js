@@ -9,7 +9,7 @@ const ObjectsToCsv = require('objects-to-csv');
     // await html document
     const html = await response.data;
     
-    console.log('Connection Successful.');
+    console.log('Ticker Connection Successful...');
 
     // parse using cheerio
     const $ = cheerio.load(html);
@@ -27,6 +27,36 @@ const ObjectsToCsv = require('objects-to-csv');
     console.log(tickers);
     
     return tickers;
+  } catch (error) {
+    console.log(error);
+  }
+})();
+
+
+(async function getCharts() {
+  try {
+    // make axios call to finviz screener (chart view)
+    const response = await axios.get('https://finviz.com/screener.ashx?v=211&f=cap_microover,sh_avgvol_o1000,sh_curvol_o2000,sh_price_o10,sh_relvol_o1.5,ta_averagetruerange_o1,ta_change_u3&o=price');
+    // await html document
+    const html = await response.data;
+    
+    console.log('Chart Connection Successful...');
+
+    // parse using cheerio
+    const $ = cheerio.load(html);
+    const allCharts = $('img.border-white');
+    
+    console.log(`${allCharts.length} charts found, saving imgs now`);
+
+    const imgArray = [];
+
+    allCharts.each((idx, chart) => {
+      const chartUrl = $(chart).attr('src');
+      imgArray.push(chartUrl);
+    });
+    
+    return imgArray;
+
   } catch (error) {
     console.log(error);
   }
