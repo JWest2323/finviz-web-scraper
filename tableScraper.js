@@ -16,7 +16,6 @@ const DIR = "/Users/jamalwest/Desktop/finvizScreener Results/2-21";
     // parse using cheerio
     const $ = cheerio.load(html);
     const allRows = $('a.screener-link-primary');
-
     console.log(`${allRows.length} tickers found, parsing now`);
 
     // create tickers array for return
@@ -27,7 +26,7 @@ const DIR = "/Users/jamalwest/Desktop/finvizScreener Results/2-21";
     });
 
     console.log(tickers);
-
+    
     return tickers;
   } catch (error) {
     console.log(error);
